@@ -47,7 +47,7 @@
 #endif
 
 #endif
-#include "GlobalUtil_AtMatch.h"
+#include "../MatchBase/GlobalUtil_AtMatch.h"
 
 #ifdef _SIFTGPU
 struct SiftGPU_dll_register
@@ -175,6 +175,16 @@ CSift::CSift(){
 
 CSift::~CSift(){
 	if (m_sift) delete m_sift;
+}
+
+void* CSift::operator new (size_t  size){
+	void * p = malloc(size);
+	if (p == 0)
+	{
+		const std::bad_alloc ba;
+		throw ba;
+	}
+	return p;
 }
 
 bool CSift::InitEnvi(bool bGPU)
@@ -1238,6 +1248,16 @@ CSiftMatch::~CSiftMatch(){
 	if (m_sift_matcher) delete m_sift_matcher;
 }
 
+void* CSiftMatch::operator new (size_t  size){
+	void * p = malloc(size);
+	if (p == 0)
+	{
+		const std::bad_alloc ba;
+		throw ba;
+	}
+	return p;
+}
+
 bool CSiftMatch::InitEnvi(bool bGPU){
 	if (m_sift_matcher)  {
 		delete m_sift_matcher; m_sift_matcher = NULL;
@@ -1616,6 +1636,12 @@ int		ExtractSiftFromBuffer(const BYTE* pImg, int nCols, int nRows, float** loc0,
 	if (des0) *des0 = des; else delete des;
 	LogPrint(0, "extract sift num = %d", ptSum);
 	return ptSum;
+}
+
+void		FreeSiftFeature(float* loc, float* fea, BYTE* des){
+	if (loc) delete loc;
+	if (fea) delete fea;
+	if (des) delete des;
 }
 
 #ifdef _DEBUG

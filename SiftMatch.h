@@ -35,11 +35,12 @@ typedef unsigned char	BYTE;
 	#define SIFTMATCH_API
 #endif
 
-class  CSift
+class CSift
 {
 public:
-	CSift();
-	virtual ~CSift();
+	SIFTMATCH_API	CSift();
+	SIFTMATCH_API	virtual ~CSift();
+	SIFTMATCH_API void* operator new (size_t size);
 	SIFTMATCH_API virtual void	ParseParam(int argc, char **argv);
 	SIFTMATCH_API bool			InitEnvi(bool bGPU = false);
 	SIFTMATCH_API virtual int		RunSIFT(const BYTE* pImg, int nCols, int nRows);
@@ -62,8 +63,9 @@ typedef bool(*transform_err_fn)(const float* locL,const float* locR,const void* 
 
 class  CSiftMatch{
 public:
-	CSiftMatch();
-	virtual ~CSiftMatch();
+	SIFTMATCH_API	CSiftMatch();
+	SIFTMATCH_API	virtual ~CSiftMatch();
+	SIFTMATCH_API void* operator new (size_t size);
 	SIFTMATCH_API bool			InitEnvi(bool bGPU = false);
 	SIFTMATCH_API virtual void	SetMaxSift(int max_sift);
 	SIFTMATCH_API virtual void	ParseParam(int argc, char **argv);
@@ -212,7 +214,8 @@ SIFTMATCH_API FPT4D*	 GetXformSiftMatch(
 	float ratiomax = 0.8f,
 	int mutual_best_match = 1
 	);
+SIFTMATCH_API void		FreeSiftPtsMem(void* pt);
 
 SIFTMATCH_API int		ExtractSiftFromBuffer(const BYTE* pImg, int nCols, int nRows, float** loc, float** fea, BYTE** des, bool bGPU);
-SIFTMATCH_API void		FreeSiftPtsMem(void* pt);
+SIFTMATCH_API void		FreeSiftFeature(float* loc, float* fea, BYTE* des);
 #endif // Sift_h__LX_whu_2015_4_23
